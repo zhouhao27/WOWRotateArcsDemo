@@ -1,8 +1,4 @@
 # WOWActivityIndicator
-Customizable activity indication in Swift 2.0. Drag to storyboard during design time.
+A demo showing rotating arcs in Swift 2.0.
 
-### Screen capture in storyboard 
-![alt tag](https://raw.githubusercontent.com/zhouhao27/WOWActivityIndicator/master/screen.png)
-
-### Video capture in simulator
-![alt tag](https://raw.githubusercontent.com/zhouhao27/WOWActivityIndicator/master/capture.gif)
+![alt tag](https://raw.githubusercontent.com/zhouhao27/WOWRotateArcsDemo/master/capture.gif)
