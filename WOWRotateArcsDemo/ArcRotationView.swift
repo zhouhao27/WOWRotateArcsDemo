@@ -15,14 +15,14 @@ class ArcRotationView: UIView {
     @IBInspectable var offsetY : CGFloat = 0.0
     @IBInspectable var radius : CGFloat = 0.0
     
-    @IBInspectable var fillColor : UIColor = UIColor.clearColor()
-    @IBInspectable var strokeColor : UIColor = UIColor.clearColor()
+    @IBInspectable var fillColor : UIColor = UIColor.clear
+    @IBInspectable var strokeColor : UIColor = UIColor.clear
     @IBInspectable var lineWidth : CGFloat = 0.0
     
     @IBInspectable var startAngle : CGFloat = 0.0
     @IBInspectable var endAngle : CGFloat = 0.0
 
-    func degreeToRadian(degree : CGFloat) -> CGFloat {
+    func degreeToRadian(_ degree : CGFloat) -> CGFloat {
     
         return degree * CGFloat(M_PI) / 180.0
     }
@@ -48,8 +48,8 @@ class ArcRotationView: UIView {
         
         self.lineWidth = 1.0
         
-        self.fillColor = UIColor.whiteColor()
-        self.strokeColor = UIColor.whiteColor()
+        self.fillColor = UIColor.white
+        self.strokeColor = UIColor.white
     }
     
     override func prepareForInterfaceBuilder() {
@@ -57,33 +57,33 @@ class ArcRotationView: UIView {
         self.setNeedsDisplay()
     }
     
-    override func drawRect(rect : CGRect) {
+    override func draw(_ rect : CGRect) {
     
         let context = UIGraphicsGetCurrentContext()
     
-        CGContextSaveGState(context)
-        CGContextTranslateCTM(context, self.offsetX, self.offsetY)
+        context?.saveGState()
+        context?.translateBy(x: self.offsetX, y: self.offsetY)
     
-        let arc = CGPathCreateMutable()
+        let arc = CGMutablePath()
     
-        CGPathAddArc(arc, nil,
-            rect.size.width * 0.5, rect.size.height * 0.5,
-            self.radius,
-            degreeToRadian(self.startAngle),
-            degreeToRadian(self.endAngle),
-            true)
+        arc.addArc(
+            center:CGPoint(x:rect.size.width * 0.5,y:rect.size.height * 0.5),
+            radius:self.radius,
+            startAngle:degreeToRadian(self.startAngle),
+            endAngle:degreeToRadian(self.endAngle),
+            clockwise:false)
+        
+        let strokedArc = CGPath(__byStroking: arc, transform: nil,
+            lineWidth: self.lineWidth,
+            lineCap: .butt,
+            lineJoin: .miter,
+            miterLimit: 10.0)
     
-        let strokedArc = CGPathCreateCopyByStrokingPath(arc, nil,
-            self.lineWidth,
-            .Butt,
-            .Miter,
-            10.0)
-    
-        CGContextAddPath(context, strokedArc)
-        CGContextSetFillColorWithColor(context, self.fillColor.CGColor)
-        CGContextSetStrokeColorWithColor(context, self.strokeColor.CGColor)
-        CGContextDrawPath(context, .FillStroke)
-        CGContextRestoreGState(context)
+        context?.addPath(strokedArc!)
+        context?.setFillColor(self.fillColor.cgColor)
+        context?.setStrokeColor(self.strokeColor.cgColor)
+        context?.drawPath(using: .fillStroke)
+        context?.restoreGState()
     }
     
 }

@@ -20,7 +20,7 @@ class SplashViewController: UIViewController {
     @IBOutlet weak var impulseView2: ArcRotationView!
     @IBOutlet var arcViews: [ArcRotationView]!    
     
-    override func viewWillAppear(animated : Bool) {
+    override func viewWillAppear(_ animated : Bool) {
         super.viewWillAppear(animated)
         
         setupImpulseViewAnimation(impulseView)
@@ -30,48 +30,48 @@ class SplashViewController: UIViewController {
     }
     
     // #Mark : loading animation
-    func setupImpulseViewAnimation(impluse : ArcRotationView) {
+    func setupImpulseViewAnimation(_ impluse : ArcRotationView) {
         
         impluse.alpha = 0.0
-        impluse.transform = CGAffineTransformMakeScale(0.0001, 0.0001)
+        impluse.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
         
-        UIView.animateWithDuration(0.7, delay: 0, options: .CurveLinear, animations: { () -> Void in
+        UIView.animate(withDuration: 0.7, delay: 0, options: .curveLinear, animations: { () -> Void in
             
             impluse.alpha = 1.0
-            impluse.transform = CGAffineTransformMakeScale(0.8, 0.8)
+            impluse.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             
             }) { (finished) -> Void in
                 
-                UIView.animateWithDuration(0.7) { () -> Void in
+                UIView.animate(withDuration: 0.7, animations: { () -> Void in
                     
-                    UIView.animateWithDuration(0.3, delay: 0, options: .CurveLinear, animations: { () -> Void in
+                    UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { () -> Void in
                         
                         impluse.alpha = 0.0
-                        impluse.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                        impluse.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                         
                         }, completion: { (finished) -> Void in
                             
                             self.setupImpulseViewAnimation(impluse)
                     })
-                }
+                }) 
         }
         
     }
 
     func setupArcsRoationAnimations() {
         
-        for var i = 0; i < self.arcViews.count; i++ {
+        for i in 0 ..< self.arcViews.count {
             
             let v = self.arcViews[i]
             
             let anim = generateLayerAnimationWithDuration(CGFloat(arc4random() % 5) + kADVMinimumAnimationDuration,reverse: ((i == 3 || i == 5)))
             
-            v.layer.addAnimation(anim, forKey: kADVAnimationKey)
+            v.layer.add(anim, forKey: kADVAnimationKey)
         }
     }
     
     
-    func generateLayerAnimationWithDuration(duration : CGFloat, reverse : Bool) -> CAKeyframeAnimation {
+    func generateLayerAnimationWithDuration(_ duration : CGFloat, reverse : Bool) -> CAKeyframeAnimation {
         
         let rotationAnimation = CAKeyframeAnimation(keyPath: "transform.rotation")
         
@@ -79,7 +79,7 @@ class SplashViewController: UIViewController {
         rotationAnimation.values = rotationValues
         
         rotationAnimation.repeatCount = Float.infinity
-        rotationAnimation.removedOnCompletion = false
+        rotationAnimation.isRemovedOnCompletion = false
         rotationAnimation.duration = CFTimeInterval(duration)
         
         return rotationAnimation
@@ -89,10 +89,10 @@ class SplashViewController: UIViewController {
         
         removeAllAnimations()
         
-        self.impulseView.hidden = true
-        self.impulseView2.hidden = true
+        self.impulseView.isHidden = true
+        self.impulseView2.isHidden = true
         
-        for var i = 0; i < self.arcViews.count; i++ {
+        for i in 0 ..< self.arcViews.count {
             
             let v = self.arcViews[i]
             v.layer.removeAllAnimations()
